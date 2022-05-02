@@ -2,7 +2,7 @@ import Foundation
 
 public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible {
     public static func < (lhs: LocalDateTime, rhs: LocalDateTime) -> Bool {
-        lhs.asDate() < rhs.asDate()
+        lhs.linearTimestamp < rhs.linearTimestamp
     }
     
     public var debugDescription: String {
@@ -12,6 +12,11 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     static let calendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
     
     var components: DateComponents
+    
+    /// This timestamp has only ordered semanctics
+    private var linearTimestamp: Int {
+        second + (minute + (hour + (day + (month + year * 12) * 31) * 24) * 60)
+    }
     
     /// Initialize a `DateComponents`, optionally specifying values for its fields.
     public init(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0) {

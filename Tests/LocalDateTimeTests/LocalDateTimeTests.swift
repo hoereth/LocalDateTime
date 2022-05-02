@@ -2,15 +2,12 @@ import XCTest
 @testable import LocalDateTime
 
 final class LocalDateTimeTests: XCTestCase {
-    func testToDate() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(LocalDateTime(year: 2022, month: 2).asDate(), Date())
-        XCTAssertEqual(LocalDateTime(hour: 10, minute:  30).asDate(), Date())
+    func testComparison() {
+        XCTAssertTrue(LocalDateTime(year: 2022, month: 2, day: 1) > LocalDateTime(year: 2021, month: 12, day: 12))
+        XCTAssertTrue(LocalDateTime(year: 2021, month: 2, day: 1) < LocalDateTime(year: 2021, month: 12, day: 12))
     }
 
     static var allTests = [
-        ("testExample", testToDate),
+        ("testExample", testComparison),
     ]
 }
