@@ -15,7 +15,7 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     
     /// This timestamp has only ordered semanctics
     private var linearTimestamp: Int {
-        second + (minute + (hour + (day + (month + year * 12) * 31) * 24) * 60)
+        second + 60 * (minute + 60 * (hour + 24 * (day + 31 * (month + 12 * year))))
     }
     
     /// Initialize a `DateComponents`, optionally specifying values for its fields.
