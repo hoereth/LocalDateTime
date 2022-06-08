@@ -23,9 +23,9 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
     }
     
-    public init(hour: Int, minute: Int = 0) {
+    public init(hour: Int, minute: Int = 0, second: Int = 0) {
         let current = Calendar.current.dateComponents(in: .current, from: Date())
-        components = DateComponents(year: current.year, month: current.month, day: current.day, hour: hour, minute: minute)
+        components = DateComponents(year: current.year, month: current.month, day: current.day, hour: hour, minute: minute, second: second)
     }
     
     public init(date: Date) {
