@@ -79,6 +79,10 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         return calendar.date(from: current)!
     }
     
+    public func isSameDay(_ other: LocalDateTime) -> Bool {
+        return year == other.year && month == other.month && day == other.day
+    }
+    
     public var isWeekend: Bool {
         get {
             let weekday = Calendar.current.component(.weekday, from: asDate())
