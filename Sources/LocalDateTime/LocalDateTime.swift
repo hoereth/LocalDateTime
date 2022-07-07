@@ -11,7 +11,7 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     
     static let calendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
     
-    var components: DateComponents
+    public let components: DateComponents
     
     /// This timestamp has only ordered semanctics
     private var linearTimestamp: Int {
@@ -43,6 +43,10 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     
     public func midnight() -> LocalDateTime {
         return LocalDateTime(year: components.year!, month: components.month!, day: components.day!)
+    }
+    
+    public func endOfDay() -> LocalDateTime {
+        return LocalDateTime(year: components.year!, month: components.month!, day: components.day!, hour: 23, minute: 59, second: 59)
     }
     
     public func localDateTime(byAdding component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> LocalDateTime {
