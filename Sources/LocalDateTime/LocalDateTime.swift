@@ -28,7 +28,7 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         components = DateComponents(year: current.year, month: current.month, day: current.day, hour: hour, minute: minute, second: second)
     }
     
-    public init(date: Date) {
+    public init(_ date: Date) {
         components = Calendar.current.dateComponents(Self.calendarComponents, from: date)
     }
     
@@ -51,7 +51,7 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     
     public func localDateTime(byAdding component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> LocalDateTime {
         let newDate = Calendar.current.date(byAdding: component, value: value, to: asDate())!
-        return LocalDateTime(date: newDate)
+        return LocalDateTime(newDate)
     }
     
     public var hourMinutes: String {
