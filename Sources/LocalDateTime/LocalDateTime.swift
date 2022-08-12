@@ -55,19 +55,21 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     }
     
     /// Detects if the system is set to 1..24 hour cycle.
-    private static var is24h: Bool = {
+    public static func is24h() -> Bool {
         let formatStringForHours = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: Locale.current)
         if let containsA = formatStringForHours?.range(of: "a") {
             return containsA.isEmpty
         } else {
             return true
         }
-    } ()
+    }
+    
+    public static var is24hCached: Bool = is24h()
     
     public var hourMinutes: String {
         get {
             if let hour = components.hour, let minute = components.minute {
-                if Self.is24h {
+                if Self.is24hCached {
                     return String(format: "%02d:%02d", hour, minute)
                 } else {
                     if hour < 12 {
