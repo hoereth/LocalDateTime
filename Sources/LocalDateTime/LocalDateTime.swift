@@ -54,10 +54,28 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         return LocalDateTime(newDate)
     }
     
+    /// Detects if the system is set to 1..24 hour cycle.
+    private static var is24h: Bool = {
+        let formatStringForHours = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: Locale.current)
+        if let containsA = formatStringForHours?.range(of: "a") {
+            return containsA.isEmpty
+        } else {
+            return true
+        }
+    } ()
+    
     public var hourMinutes: String {
         get {
             if let hour = components.hour, let minute = components.minute {
-                return String(format: "%02d:%02d", hour, minute)
+                if Self.is24h {
+                    return String(format: "%02d:%02d", hour, minute)
+                } else {
+                    if hour < 12 {
+                        return String(format: "%02d:%02d %@", hour, minute, Calendar.current.amSymbol)
+                    } else {
+                        return String(format: "%02d:%02d %@", hour - 12, minute, Calendar.current.pmSymbol)
+                    }
+                }
             } else {
                 return ""
             }
