@@ -36,8 +36,8 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         components = Calendar.current.dateComponents(Self.calendarComponents, from: Date())
     }
     
-    public func dateComponent(component: Calendar.Component) -> Int {
-        let components = Calendar.current.dateComponents([component], from: asDate())
+    public func dateComponent(calendar: Calendar = Calendar.current, component: Calendar.Component) -> Int {
+        let components = calendar.dateComponents([component], from: asDate())
         return components.value(for: component)!
     }
     
@@ -49,8 +49,8 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         return LocalDateTime(year: components.year!, month: components.month!, day: components.day!, hour: 23, minute: 59, second: 59)
     }
     
-    public func localDateTime(byAdding component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> LocalDateTime {
-        let newDate = Calendar.current.date(byAdding: component, value: value, to: asDate())!
+    public func localDateTime(calendar: Calendar = Calendar.current, byAdding component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> LocalDateTime {
+        let newDate = calendar.date(byAdding: component, value: value, to: asDate())!
         return LocalDateTime(newDate)
     }
     
