@@ -1,5 +1,6 @@
 import Foundation
 
+/// Performance considerations: class members which do calendar calculations are marked as "computationally expensive" and should only be called if necesary.
 public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible, Hashable {
     public static func < (lhs: LocalDateTime, rhs: LocalDateTime) -> Bool {
         lhs.linearTimestamp < rhs.linearTimestamp
@@ -18,16 +19,18 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         second + 60 * (minute + 60 * (hour + 24 * (day + 31 * (month + 12 * year))))
     }
     
-    /// Initialize a `DateComponents`, optionally specifying values for its fields.
+    /// Initializes LocalDateTime with given date and time components.
     public init(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0, second: Int = 0) {
         components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
     }
     
+    /// Initializes LocalDateTime with current date.
     public init(hour: Int, minute: Int = 0, second: Int = 0) {
         let current = Calendar.current.dateComponents(in: .current, from: Date())
         components = DateComponents(year: current.year, month: current.month, day: current.day, hour: hour, minute: minute, second: second)
     }
     
+    /// Initializes LocalDateTime with current date and current time.
     public init(_ date: Date) {
         components = Calendar.current.dateComponents(Self.calendarComponents, from: date)
     }
@@ -36,11 +39,15 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         components = Calendar.current.dateComponents(Self.calendarComponents, from: Date())
     }
     
+    /// calls "asDate" => expensive computation!
+    /// - Parameters:
+    ///   - calendar: Might affect the result. (e.g. calendar week number)
     public func dateComponent(calendar: Calendar = Calendar.current, component: Calendar.Component) -> Int {
         let components = calendar.dateComponents([component], from: asDate())
         return components.value(for: component)!
     }
     
+    /// aka "startOfDay"
     public func midnight() -> LocalDateTime {
         return LocalDateTime(year: components.year!, month: components.month!, day: components.day!)
     }
@@ -49,27 +56,42 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         return LocalDateTime(year: components.year!, month: components.month!, day: components.day!, hour: 23, minute: 59, second: 59)
     }
     
+    /// calls "asDate" => expensive computation!
     public func localDateTime(calendar: Calendar = Calendar.current, byAdding component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> LocalDateTime {
         let newDate = calendar.date(byAdding: component, value: value, to: asDate())!
         return LocalDateTime(newDate)
     }
     
-    /// Detects if the system is set to 1..24 hour cycle.
-    public static func is24h() -> Bool {
-        let formatStringForHours = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: Locale.current)
-        if let containsA = formatStringForHours?.range(of: "a") {
-            return containsA.isEmpty
+    /// just caches the is24h-value
+    private static var is24hCached: Bool?
+    /// caches the locale the is24h-value is based on
+    private static var is24hCachedLocale: Locale?
+
+    /// Detects if the current locale is set to 1..24 hour cycle.
+    private static func is24h() -> Bool {
+        let locale = Locale.current
+        
+        if let cached = is24hCached, locale == is24hCachedLocale {
+            return cached
         } else {
-            return true
+            let formatStringForHours = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: locale)
+            let newCacheValue: Bool
+            if let containsA = formatStringForHours?.range(of: "a") {
+                newCacheValue = containsA.isEmpty
+            } else {
+                newCacheValue = true
+            }
+            is24hCached = newCacheValue
+            is24hCachedLocale = locale
+            return newCacheValue
         }
     }
     
-    public static var is24hCached: Bool = is24h()
-    
+    /// Locale-aware representation of time with minute precision. E.g.: "07:00" or "10:15 AM"
     public var hourMinutes: String {
         get {
             if let hour = components.hour, let minute = components.minute {
-                if Self.is24hCached {
+                if Self.is24h() {
                     return String(format: "%02d:%02d", hour, minute)
                 } else {
                     if hour < 12 {
@@ -84,14 +106,13 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         }
     }
     
+    /// calls "asDate" => expensive computation!
     public func asDate() -> Date {
         return asDate(TimeZone.current)
     }
     
     /// expensive computation!
-    public func asDate(_ timeZone: TimeZone) -> Date {
-        let calendar = Calendar.current
-        
+    public func asDate(_ timeZone: TimeZone, calendar: Calendar = Calendar.current) -> Date {
         var current = calendar.dateComponents(Self.calendarComponents, from: Date())
         
         for component in Self.calendarComponents {
@@ -107,6 +128,7 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         return year == other.year && month == other.month && day == other.day
     }
     
+    /// calls "asDate" => expensive computation!
     public var isWeekend: Bool {
         get {
             let weekday = Calendar.current.component(.weekday, from: asDate())
