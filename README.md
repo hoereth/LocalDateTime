@@ -2,9 +2,9 @@
 
 ## Description
 
-This package introduces a real local date/time data type to iOS. It is based on [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) for easy converting between [Date](https://developer.apple.com/documentation/foundation/date) and LocalDateTime. Technically, a LocalDateTime is just wrapping a [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) object. However, it asserts that year, month, day, hour, minute and second components are always set.
+This package introduces a [real local date/time data type](Sources/LocalDateTime/LocalDateTime.swift) to iOS. It is based on [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) for easy converting between [Date](https://developer.apple.com/documentation/foundation/date) and LocalDateTime. Technically, a LocalDateTime is just wrapping a [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) object. However, it asserts that year, month, day, hour, minute and second components are always set.
 
-## Why not just use Date()?
+## Why not just use Date?
 
 In Swift, a [Date](https://developer.apple.com/documentation/foundation/date) is just one 64-bit floating point number counting the number of seconds as a relative offset from the reference date of January 1, 2001 at 00:00:00 UTC. In other programming languages, such a type would rather be called "timestamp". Those timestamps are tied to the UTC timezone. If you need to handle local data, you need to add the local time zone.
 
@@ -42,4 +42,4 @@ You might ask yourself a few questions:
 
 ### Conclusion
 
-We like to have a choice of how to implement local date/time information. Swift lacks a readable option so far. You can combine [LocalDateTime()](Sources/LocalDateTime/LocalDateTime.swift) with the [TimeZone](https://developer.apple.com/documentation/foundation/timezone) data type to become time zone aware.
+We like to have a choice of how to implement local date/time information. Swift lacks a readable option so far. You can combine [LocalDateTime](Sources/LocalDateTime/LocalDateTime.swift) with the [TimeZone](https://developer.apple.com/documentation/foundation/timezone) data type to become time zone aware.
