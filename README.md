@@ -22,10 +22,10 @@ When you are required to handle local data (point in time + local time zone), th
 |                          | Timestamp Style                          | Readable Style          |
 |--------------------------|------------------------------------------|-------------------------------|
 | Database Representation  | TIMESTAMP + global DB time zone setting  | DATETIME            |
-| JSON Representation      | Integer + time zone (server default?)    | String (ISO 8601)             |
+| JSON Representation      | Integer + time zone (server default?)    | String ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601))             |
 | Java Types               | Date() + TimeZone()                      | LocalDateTime() + TimeZone()  |
 | Java Types               | Date() + TimeZone()                      | ZonedDateTime()               |
-| Swift Types              | Date() + TimeZone()                      | String (ISO 8601)             |
+| Swift Types              | Date() + TimeZone()                      | String ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601))             |
 | Swift Types              | Date() + TimeZone()                      | ❓ + TimeZone()               |
 
 ### Local Date/Time Aspects
