@@ -42,4 +42,4 @@ You might ask yourself a few questions:
 
 ### Conclusion
 
-We like to have a choice of how to implement local date/time. Swift lacks a readable option so far. [LocalDateTime()](Sources/LocalDateTime/LocalDateTime.swift) represents a true local date time. You can combine it with the TimeZone() data type to become time zone aware.
+We like to have a choice of how to implement local date/time information. Swift lacks a readable option so far. You can combine [LocalDateTime()](Sources/LocalDateTime/LocalDateTime.swift) with the TimeZone() data type to become time zone aware.
