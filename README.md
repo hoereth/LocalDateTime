@@ -2,11 +2,11 @@
 
 ## Description
 
-This package introduces a real local date/time data type to iOS. It is based on DateComponents for easy converting between Date and LocalDateTime. Technically, a LocalDateTime is just wrapping a DateComponents object. However, it asserts that year, month, day, hour, minute and second components are always set.
+This package introduces a real local date/time data type to iOS. It is based on [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) for easy converting between [Date](https://developer.apple.com/documentation/foundation/date) and LocalDateTime. Technically, a LocalDateTime is just wrapping a [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) object. However, it asserts that year, month, day, hour, minute and second components are always set.
 
 ## Why not just use Date()?
 
-In Swift, a Date() is just one 64-bit floating point number counting the number of seconds as a relative offset from the reference date of January 1, 2001 at 00:00:00 UTC. In other programming languages, such a type would rather be called "timestamp". Those timestamps are tied to the UTC timezone. If you need to handle local data, you need to add the local time zone.
+In Swift, a [Date](https://developer.apple.com/documentation/foundation/date) is just one 64-bit floating point number counting the number of seconds as a relative offset from the reference date of January 1, 2001 at 00:00:00 UTC. In other programming languages, such a type would rather be called "timestamp". Those timestamps are tied to the UTC timezone. If you need to handle local data, you need to add the local time zone.
 
 | Example                  | point in time?  |  time zone required? |
 |--------------------------|----------------------------------|--|
@@ -25,8 +25,8 @@ When you are required to handle local data (point in time + local time zone), th
 | JSON Representation      | Integer + time zone (server default?)    | String ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601))             |
 | Java Types               | Date() + TimeZone()                      | LocalDateTime() + TimeZone()  |
 | Java Types               | Date() + TimeZone()                      | ZonedDateTime()               |
-| Swift Types              | Date() + TimeZone()                      | String ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601))             |
-| Swift Types              | Date() + TimeZone()                      | ❓ + TimeZone()               |
+| Swift Types              | [Date](https://developer.apple.com/documentation/foundation/date) + [TimeZone](https://developer.apple.com/documentation/foundation/timezone)                      | String ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601))             |
+| Swift Types              | [Date](https://developer.apple.com/documentation/foundation/date) + [TimeZone](https://developer.apple.com/documentation/foundation/timezone)                      | ❓ + [TimeZone](https://developer.apple.com/documentation/foundation/timezone)  |
 
 ### Local Date/Time Aspects
 
@@ -42,4 +42,4 @@ You might ask yourself a few questions:
 
 ### Conclusion
 
-We like to have a choice of how to implement local date/time information. Swift lacks a readable option so far. You can combine [LocalDateTime()](Sources/LocalDateTime/LocalDateTime.swift) with the TimeZone() data type to become time zone aware.
+We like to have a choice of how to implement local date/time information. Swift lacks a readable option so far. You can combine [LocalDateTime()](Sources/LocalDateTime/LocalDateTime.swift) with the [TimeZone](https://developer.apple.com/documentation/foundation/timezone) data type to become time zone aware.
