@@ -9,7 +9,7 @@ This package introduces a real local date/time data type to iOS. It is based on 
 In Swift, a Date() is just one 64-bit floating point number counting the number of seconds as a relative offset from the reference date of January 1, 2001 at 00:00:00 UTC. In other programming languages, such a type would rather be called "timestamp". Those timestamps are tied to the UTC timezone. If you need to handle local data, you need to add the local time zone.
 
 | Example                  | point in time?  |  time zone required? |
-|--------------------------|----------------------------------|
+|--------------------------|----------------------------------|--|
 | AFL kickoff broadcast    | ✅ | UTC is fine, it will have to be converted in everybody's local time zone anyway |
 | New Year's fireworks     | ❌ | ❌ no, the local time is same for everyone |
 | train departure          | ✅ | ✅ train station's time zone |
