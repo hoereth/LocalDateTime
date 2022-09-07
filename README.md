@@ -2,7 +2,7 @@
 
 ## Description
 
-This package introduces a [real local date/time data type](Sources/LocalDateTime/LocalDateTime.swift) to iOS. It is based on [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) for easy converting between [Date](https://developer.apple.com/documentation/foundation/date) and LocalDateTime. Technically, a LocalDateTime is just wrapping a [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) object. However, it asserts that year, month, day, hour, minute and second components are always set.
+This package introduces a real local date/time data type to iOS ([LocalDateTime.swift](Sources/LocalDateTime/LocalDateTime.swift)). It is based on [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) for easy converting between [Date](https://developer.apple.com/documentation/foundation/date) and LocalDateTime. Technically, a LocalDateTime is just wrapping a [DateComponents](https://developer.apple.com/documentation/foundation/datecomponents) object. However, it asserts that year, month, day, hour, minute and second components are always set.
 
 ## Why not just use Date?
 
