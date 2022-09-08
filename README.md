@@ -6,7 +6,7 @@ This package introduces a real local date/time data type to iOS. It is based on 
 
 ## Why not just use Date?
 
-In Swift (just as in Java), a [Date](https://developer.apple.com/documentation/foundation/date) is just one 64-bit floating point number counting the number of seconds as a relative offset from the reference date of January 1, 2001 at 00:00:00 UTC. In other programming languages, such a type would rather be called "timestamp". Those timestamps are tied to the UTC timezone. If you need to handle local data, you need to add the local time zone.
+In Swift, a [Date](https://developer.apple.com/documentation/foundation/date) is just one 64-bit floating point number counting the number of seconds as a relative offset from the reference date of January 1, 2001 at 00:00:00 UTC. Java's Date() works in a similar way. In other programming languages, such a type would rather be called "timestamp". Those timestamps are tied to the UTC timezone. If you need to handle local data, you need to add the local time zone.
 
 | Example                  | point in time?  |  time zone required? |
 |--------------------------|----------------------------------|--|
