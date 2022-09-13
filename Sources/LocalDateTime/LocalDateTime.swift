@@ -15,7 +15,7 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     public let components: DateComponents
     
     /// This timestamp has only "ordered" semantics
-    private var linearTimestamp: Int {
+    public var linearTimestamp: Int {
         second + 60 * (minute + 60 * (hour + 24 * (day + 31 * (month + 12 * year))))
     }
     
