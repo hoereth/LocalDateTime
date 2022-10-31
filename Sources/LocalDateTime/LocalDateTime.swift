@@ -30,6 +30,10 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         components = DateComponents(year: current.year, month: current.month, day: current.day, hour: hour, minute: minute, second: second)
     }
     
+    public init(_ date: Date, calendar: Calendar) {
+        components = calendar.dateComponents(Self.calendarComponents, from: date)
+    }
+    
     /// Initializes LocalDateTime with current date and current time.
     public init(_ date: Date) {
         components = Calendar.current.dateComponents(Self.calendarComponents, from: date)
