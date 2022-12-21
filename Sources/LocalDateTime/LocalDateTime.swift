@@ -1,7 +1,8 @@
 import Foundation
 
 /// Performance considerations: class members which do calendar calculations are marked as "computationally expensive" and should only be called if necesary.
-public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible, Hashable, Codable {
+public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible, Hashable, Encodable, Decodable {
+    
     public static func < (lhs: LocalDateTime, rhs: LocalDateTime) -> Bool {
         lhs.linearTimestamp < rhs.linearTimestamp
     }
@@ -175,5 +176,52 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
             components.second!
         }
     }
+    
+    //
+    // MARK: Compact ISO-Coding Style, e.g. "2022-12-08T07:15:00"
+    //
 
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let string = try container.decode(String.self, forKey: .iso)
+        
+        var year = 0
+        var month = 0
+        var day = 0
+        var hour = 0
+        var minute = 0
+        var second = 0
+        
+        let dateTime = string.components(separatedBy: "T")
+        if dateTime.count == 2 {
+            let dateParts = dateTime[0].split(separator: "-")
+            if dateParts.count == 3 {
+                year = Int(dateParts[0]) ?? 0
+                month = Int(dateParts[1]) ?? 0
+                day = Int(dateParts[2]) ?? 0
+            }
+            
+            let timeParts = dateTime[1].split(separator: ":")
+            if timeParts.count == 3 {
+                hour = Int(timeParts[0]) ?? 0
+                minute = Int(timeParts[1]) ?? 0
+                second = Int(timeParts[2]) ?? 0
+            }
+        }
+        
+        self.init(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
+    }
+    
+    enum CodingKeys: CodingKey {
+        case iso
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        let iso = String(format: "%04d-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second)
+        
+        try container.encode(iso, forKey: .iso)
+    }
 }
