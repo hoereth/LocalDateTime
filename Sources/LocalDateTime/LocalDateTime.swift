@@ -182,9 +182,9 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     //
 
     public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.singleValueContainer()
         
-        let string = try container.decode(String.self, forKey: .iso)
+        let string = try container.decode(String.self)
         
         var year = 0
         var month = 0
@@ -213,15 +213,11 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         self.init(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
     }
     
-    enum CodingKeys: CodingKey {
-        case iso
-    }
-    
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+        var container = encoder.singleValueContainer()
         
         let iso = String(format: "%04d-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second)
         
-        try container.encode(iso, forKey: .iso)
+        try container.encode(iso)
     }
 }
