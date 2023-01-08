@@ -8,7 +8,7 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     }
     
     public var debugDescription: String {
-        return components.debugDescription
+        asISO()
     }
     
     static let calendarComponents: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
@@ -216,8 +216,10 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         
-        let iso = String(format: "%04d-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second)
-        
-        try container.encode(iso)
+        try container.encode(asISO())
+    }
+    
+    private func asISO() -> String {
+        String(format: "%04d-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second)
     }
 }
