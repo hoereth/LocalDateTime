@@ -43,3 +43,9 @@ You might ask yourself a few questions:
 ### Conclusion
 
 We like to have a choice of how to implement local date/time information. Swift lacks a readable option so far. You can combine [LocalDateTime](Sources/LocalDateTime/LocalDateTime.swift) with the [TimeZone](https://developer.apple.com/documentation/foundation/timezone) data type to become time zone aware.
+
+### References
+
+## Week Plan Calendar
+
+This calendar / todo app for iOS uses LocalDateTime internally: [Week Plan Calendar](https://apps.apple.com/us/app/week-plan-calendar/id1621397141).
