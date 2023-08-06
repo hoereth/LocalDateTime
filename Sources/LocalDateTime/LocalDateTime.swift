@@ -223,3 +223,25 @@ public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible
         String(format: "%04d-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second)
     }
 }
+
+public struct LocalDateTimeRange {
+    public let from: LocalDateTime
+    public let to: LocalDateTime
+    
+    public init(from: LocalDateTime, to: LocalDateTime) {
+        self.from = from
+        self.to = to
+    }
+    
+    public func intersectWith(other: LocalDateTimeRange) -> LocalDateTimeRange? {
+        guard from <= to else { return nil }
+        guard other.from <= other.to else { return nil }
+        
+        let latestStart = max(from, other.from)
+        let earliestEnd = min(to, other.to)
+        
+        guard latestStart <= earliestEnd else { return nil }
+        
+        return LocalDateTimeRange(from: latestStart, to: earliestEnd)
+    }
+}
