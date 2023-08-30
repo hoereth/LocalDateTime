@@ -1,13 +1,17 @@
 import Foundation
 
 /// Performance considerations: class members which do calendar calculations are marked as "computationally expensive" and should only be called if necesary.
-public struct LocalDateTime: Equatable, Comparable, CustomDebugStringConvertible, Hashable, Encodable, Decodable, Sendable {
+public struct LocalDateTime: Equatable, Comparable, CustomStringConvertible, CustomDebugStringConvertible, Hashable, Encodable, Decodable, Sendable {
     
     public static func < (lhs: LocalDateTime, rhs: LocalDateTime) -> Bool {
         lhs.linearTimestamp < rhs.linearTimestamp
     }
     
     public var debugDescription: String {
+        asISO()
+    }
+    
+    public var description: String {
         asISO()
     }
     
