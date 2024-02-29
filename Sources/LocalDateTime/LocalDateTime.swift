@@ -104,9 +104,12 @@ public struct LocalDateTime: Equatable, Comparable, CustomStringConvertible, Cus
                     return String(format: "%02d:%02d", hour, minute)
                 } else {
                     if hour < 12 {
-                        return String(format: "%02d:%02d %@", hour, minute, Calendar.current.amSymbol)
+                        let hourWithoutZero = hour == 0 ? 12 : hour
+                        return String(format: "%02d:%02d ㏂", hourWithoutZero, minute)
                     } else {
-                        return String(format: "%02d:%02d %@", hour - 12, minute, Calendar.current.pmSymbol)
+                        let h12 = hour - 12
+                        let hourWithoutZero = h12 == 0 ? 12 : h12
+                        return String(format: "%02d:%02d ㏘", hourWithoutZero, minute)
                     }
                 }
             } else {
