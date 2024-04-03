@@ -1,8 +1,7 @@
 import Foundation
 
 /// Performance considerations: class members which do calendar calculations are marked as "computationally expensive" and should only be called if necesary.
-public struct LocalDateTime: Equatable, Comparable, CustomStringConvertible, CustomDebugStringConvertible, Hashable, Encodable, Decodable, Sendable {
-    
+public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringConvertible, CustomDebugStringConvertible, Hashable, Codable, Sendable {
     public static func < (lhs: LocalDateTime, rhs: LocalDateTime) -> Bool {
         lhs.linearTimestamp < rhs.linearTimestamp
     }
@@ -35,7 +34,9 @@ public struct LocalDateTime: Equatable, Comparable, CustomStringConvertible, Cus
         components = DateComponents(year: current.year, month: current.month, day: current.day, hour: hour, minute: minute, second: second)
     }
     
-    public init(_ date: Date, calendar: Calendar) {
+    public init(_ date: Date, timeZone: TimeZone) {
+        var calendar = Calendar.current
+        calendar.timeZone = timeZone
         components = calendar.dateComponents(Self.calendarComponents, from: date)
     }
     
@@ -124,7 +125,10 @@ public struct LocalDateTime: Equatable, Comparable, CustomStringConvertible, Cus
     }
     
     /// expensive computation!
-    public func asDate(_ timeZone: TimeZone, calendar: Calendar = Calendar.current) -> Date {
+    public func asDate(_ timeZone: TimeZone) -> Date {
+        var calendar = Calendar.current
+        calendar.timeZone = timeZone
+        
         var current = calendar.dateComponents(Self.calendarComponents, from: Date())
         
         for component in Self.calendarComponents {
@@ -193,29 +197,36 @@ public struct LocalDateTime: Equatable, Comparable, CustomStringConvertible, Cus
         
         let string = try container.decode(String.self)
         
-        var year = 0
-        var month = 0
-        var day = 0
-        var hour = 0
-        var minute = 0
-        var second = 0
-        
-        let dateTime = string.components(separatedBy: "T")
-        if dateTime.count == 2 {
-            let dateParts = dateTime[0].split(separator: "-")
-            if dateParts.count == 3 {
-                year = Int(dateParts[0]) ?? 0
-                month = Int(dateParts[1]) ?? 0
-                day = Int(dateParts[2]) ?? 0
-            }
-            
-            let timeParts = dateTime[1].split(separator: ":")
-            if timeParts.count == 3 {
-                hour = Int(timeParts[0]) ?? 0
-                minute = Int(timeParts[1]) ?? 0
-                second = Int(timeParts[2]) ?? 0
-            }
+        self.init(isoString: string)
+    }
+    
+    public init(isoString: String) {
+        let dateTime = isoString.components(separatedBy: "T")
+        guard dateTime.count == 2 else {
+            fatalError("cannot parse isoString")
         }
+        
+        let year, month, day, hour, minute, second: Int
+        
+        let dateParts = dateTime[0].split(separator: "-")
+        
+        guard dateParts.count == 3 else {
+            fatalError("cannot parse datePart of isoString")
+        }
+        
+        year = Int(dateParts[0]) ?? 0
+        month = Int(dateParts[1]) ?? 0
+        day = Int(dateParts[2]) ?? 0
+        
+        let timeParts = dateTime[1].split(separator: ":")
+        
+        guard timeParts.count == 3 else {
+            fatalError("cannot parse timePart of isoString")
+        }
+
+        hour = Int(timeParts[0]) ?? 0
+        minute = Int(timeParts[1]) ?? 0
+        second = Int(timeParts[2]) ?? 0
         
         self.init(year: year, month: month, day: day, hour: hour, minute: minute, second: second)
     }
@@ -226,7 +237,7 @@ public struct LocalDateTime: Equatable, Comparable, CustomStringConvertible, Cus
         try container.encode(asISO())
     }
     
-    private func asISO() -> String {
+    public func asISO() -> String {
         String(format: "%04d-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second)
     }
 }
