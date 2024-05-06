@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol LocalDateType {
+public protocol LocalDateType {
     var year: Int { get }
     var month: Int { get }
     var day: Int { get }
