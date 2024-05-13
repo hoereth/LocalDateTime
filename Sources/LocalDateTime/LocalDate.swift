@@ -15,11 +15,11 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
     }
     
     public var debugDescription: String {
-        asISO()
+        formatted()
     }
     
     public var description: String {
-        asISO()
+        formatted()
     }
     
     static let calendarComponents: Set<Calendar.Component> = [.year, .month, .day]
@@ -58,6 +58,14 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
     public func dateComponent(calendar: Calendar = Calendar.current, component: Calendar.Component) -> Int {
         let components = calendar.dateComponents([component], from: asDate())
         return components.value(for: component)!
+    }
+    
+    public func startOfYear() -> LocalDate {
+        return LocalDate(year: components.year!, month: 1, day: 1)
+    }
+    
+    public func endOfYear() -> LocalDate {
+        return LocalDate(year: components.year!, month: 12, day: 31)
     }
     
     /// calls "asDate" => expensive computation!
@@ -153,6 +161,13 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
     
     public func asISO() -> String {
         String(format: "%04d-%02d-%02d", year, month, day)
+    }
+    
+    public func formatted(_ locale: Locale = .current, style: DateFormatter.Style = .short) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = locale
+        dateFormatter.dateStyle = style
+        return dateFormatter.string(from: self.asDate())
     }
 }
 
