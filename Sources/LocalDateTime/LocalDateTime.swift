@@ -119,6 +119,13 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
         }
     }
     
+    @available(iOS 15.0, *)
+    public func relative(_ locale: Locale = .current) -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.locale = locale
+        return formatter.localizedString(for: self.asDate(), relativeTo: .now)
+    }
+    
     /// calls "asDate" => expensive computation!
     public func asDate() -> Date {
         return asDate(TimeZone.current)
