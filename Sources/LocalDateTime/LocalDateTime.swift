@@ -119,11 +119,11 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
         }
     }
     
-    @available(iOS 15.0, *)
+    @available(iOS 15.0, watchOS 6.0, *)
     public func relative(_ locale: Locale = .current) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.locale = locale
-        return formatter.localizedString(for: self.asDate(), relativeTo: .now)
+        return formatter.localizedString(for: self.asDate(), relativeTo: Date())
     }
     
     /// calls "asDate" => expensive computation!
