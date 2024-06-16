@@ -36,20 +36,10 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
         components = DateComponents(year: year, month: month, day: day, hour: 0, minute: 0, second: 0)
     }
     
-    /// Initializes LocalDate with current date.
-    public init() {
-        let current = Calendar.current.dateComponents(in: .current, from: Date())
-        self.init(year: current.year!, month: current.month!, day: current.day!)
-    }
-    
-    public init(_ date: Date, timeZone: TimeZone) {
+    public init(_ date: Date = Date(), timeZone: TimeZone = TimeZone(secondsFromGMT: 0)!) {
         var calendar = Calendar.current
         calendar.timeZone = timeZone
         components = calendar.dateComponents(Self.calendarComponents, from: date)
-    }
-    
-    public init(_ date: Date = Date()) {
-        components = Calendar.current.dateComponents(Self.calendarComponents, from: date)
     }
     
     /// calls "asDate" => expensive computation!
@@ -74,13 +64,8 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
         return LocalDate(newDate)
     }
     
-    /// calls "asDate" => expensive computation!
-    public func asDate() -> Date {
-        return asDate(TimeZone.current)
-    }
-    
     /// expensive computation!
-    public func asDate(_ timeZone: TimeZone) -> Date {
+    public func asDate(_ timeZone: TimeZone = TimeZone(secondsFromGMT:0)!) -> Date {
         var calendar = Calendar.current
         calendar.timeZone = timeZone
         
