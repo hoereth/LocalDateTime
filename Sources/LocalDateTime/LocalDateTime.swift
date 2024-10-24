@@ -125,9 +125,9 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
             if let hour = components.hour, let minute = components.minute {
                 if Self.is24h() {
                     if minute == 0 {
-                        return String(format: "%d", hour)
+                        return String(format: "%02d", hour)
                     } else {
-                        return String(format: "%d:%02d", hour, minute)
+                        return String(format: "%02d:%02d", hour, minute)
                     }
                 } else {
                     if hour < 12 {
@@ -151,8 +151,8 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
                 return ""
             }
         }
-    }
-    
+    }    
+
     @available(iOS 15.0, watchOS 6.0, *)
     public func relative(_ locale: Locale = .current) -> String {
         let formatter = RelativeDateTimeFormatter()
