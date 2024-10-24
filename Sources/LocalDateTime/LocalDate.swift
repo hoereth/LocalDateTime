@@ -33,7 +33,7 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
     
     /// Initializes LocalDate with given date and time components.
     public init(year: Int, month: Int, day: Int) {
-        components = DateComponents(year: year, month: month, day: day, hour: 0, minute: 0, second: 0)
+        components = DateComponents(year: year, month: month, day: day)
     }
     
     public init(_ date: Date = Date(), timeZone: TimeZone = TimeZone(secondsFromGMT: 0)!) {
@@ -56,6 +56,19 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
     
     public func endOfYear() -> LocalDate {
         return LocalDate(year: components.year!, month: 12, day: 31)
+    }
+    
+    public func endOfMonth(_ timeZone: TimeZone = TimeZone(secondsFromGMT:0)!) -> LocalDate {
+        var newComponents = components
+        newComponents.month! += 1
+        newComponents.day = 1
+        
+        var calendar = Calendar.current
+        calendar.timeZone = timeZone
+        
+        let firstOfNextMonth = calendar.date(from: newComponents)
+        
+        return LocalDate(firstOfNextMonth!).localDate(byAdding: .day, value: -1)
     }
     
     /// calls "asDate" => expensive computation!
