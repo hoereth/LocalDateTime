@@ -106,11 +106,11 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
                 } else {
                     if hour < 12 {
                         let hourWithoutZero = hour == 0 ? 12 : hour
-                        return String(format: "%02d:%02d ㏂", hourWithoutZero, minute)
+                        return String(format: "%d:%02d ㏂", hourWithoutZero, minute)
                     } else {
                         let h12 = hour - 12
                         let hourWithoutZero = h12 == 0 ? 12 : h12
-                        return String(format: "%02d:%02d ㏘", hourWithoutZero, minute)
+                        return String(format: "%d:%02d ㏘", hourWithoutZero, minute)
                     }
                 }
             } else {
