@@ -73,7 +73,7 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
     
     /// calls "asDate" => expensive computation!
     public func localDate(calendar: Calendar = Calendar.current, byAdding component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> LocalDate {
-        let newDate = calendar.date(byAdding: component, value: value, to: asDate())!
+        let newDate = calendar.date(byAdding: component, value: value, to: asDate(), wrappingComponents: wrappingComponents)!
         return LocalDate(newDate)
     }
     
