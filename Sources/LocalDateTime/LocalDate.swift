@@ -58,6 +58,10 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
         return LocalDate(year: components.year!, month: 12, day: 31)
     }
     
+    public func startOfMonth() -> LocalDate {
+        return LocalDate(year: year, month: month, day: 1)
+    }
+    
     public func endOfMonth(_ timeZone: TimeZone = TimeZone(secondsFromGMT:0)!) -> LocalDate {
         var newComponents = components
         newComponents.month! += 1
