@@ -157,7 +157,7 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
     public func relative(_ locale: Locale = .current) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.locale = locale
-        return formatter.localizedString(for: self.asDate(), relativeTo: Date())
+        return formatter.localizedString(for: self.asDate(), relativeTo: .now)
     }
     
     /// calls "asDate" => expensive computation!
