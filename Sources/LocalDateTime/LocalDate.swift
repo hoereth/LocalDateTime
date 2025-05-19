@@ -5,7 +5,7 @@ public protocol LocalDateType {
     var month: Int { get }
     var day: Int { get }
     
-    var linearTimestamp: Double { get }
+    var linearTimestamp: Int { get }
 }
 
 /// Performance considerations: class members which do calendar calculations are marked as "computationally expensive" and should only be called if necesary.
@@ -27,8 +27,8 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
     public let components: DateComponents
     
     /// This timestamp has only "ordered" semantics
-    public var linearTimestamp: Double {
-        Double(day) + 31.0 * (Double(month) + 12.0 * Double(year))
+    public var linearTimestamp: Int {
+        day + 31 * (month + 12 * year)
     }
     
     /// Initializes LocalDate with given date and time components.

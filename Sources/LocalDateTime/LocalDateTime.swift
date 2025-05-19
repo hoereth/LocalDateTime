@@ -19,8 +19,8 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
     public let components: DateComponents
     
     /// This timestamp has only "ordered" semantics
-    public var linearTimestamp: Double {
-        Double(second) + 60.0 * (Double(minute) + 60.0 * (Double(hour) + 24.0 * (Double(day) + 31.0 * (Double(month) + 12.0 * Double(year)))))
+    public var linearTimestamp: Int {
+        second + 60 * (minute + 60 * (hour + 24 * (day + 31 * (month + 12 * year))))
     }
     
     /// Initializes LocalDateTime with given date and time components.
