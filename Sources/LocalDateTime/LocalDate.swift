@@ -169,6 +169,7 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
         let dateFormatter = DateFormatter()
         dateFormatter.locale = locale
         dateFormatter.dateStyle = style
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)!
         return dateFormatter.string(from: self.asDate())
     }
 }
