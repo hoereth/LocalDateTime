@@ -106,11 +106,44 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
                 } else {
                     if hour < 12 {
                         let hourWithoutZero = hour == 0 ? 12 : hour
-                        return String(format: "%02d:%02d ㏂", hourWithoutZero, minute)
+                        return String(format: "%d:%02d ㏂", hourWithoutZero, minute)
                     } else {
                         let h12 = hour - 12
                         let hourWithoutZero = h12 == 0 ? 12 : h12
-                        return String(format: "%02d:%02d ㏘", hourWithoutZero, minute)
+                        return String(format: "%d:%02d ㏘", hourWithoutZero, minute)
+                    }
+                }
+            } else {
+                return ""
+            }
+        }
+    }
+    
+    public var hourMinutesShort: String {
+        get {
+            if let hour = components.hour, let minute = components.minute {
+                if Self.is24h() {
+                    if minute == 0 {
+                        return String(format: "%02d", hour)
+                    } else {
+                        return String(format: "%02d:%02d", hour, minute)
+                    }
+                } else {
+                    if hour < 12 {
+                        let hourWithoutZero = hour == 0 ? 12 : hour
+                        if minute == 0 {
+                            return String(format: "%d ㏂", hourWithoutZero)
+                        } else {
+                            return String(format: "%d:%02d ㏂", hourWithoutZero, minute)
+                        }
+                    } else {
+                        let h12 = hour - 12
+                        let hourWithoutZero = h12 == 0 ? 12 : h12
+                        if minute == 0 {
+                            return String(format: "%d ㏘", hourWithoutZero, minute)
+                        } else {
+                            return String(format: "%d:%02d ㏘", hourWithoutZero, minute)
+                        }
                     }
                 }
             } else {
