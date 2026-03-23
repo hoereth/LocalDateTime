@@ -10,6 +10,16 @@ public protocol LocalDateType {
 
 /// Performance considerations: class members which do calendar calculations are marked as "computationally expensive" and should only be called if necesary.
 public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConvertible, CustomDebugStringConvertible, Hashable, Encodable, Decodable, Sendable {
+    public static func == (lhs: LocalDate, rhs: LocalDate) -> Bool {
+        lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(year)
+        hasher.combine(month)
+        hasher.combine(day)
+    }
+
     public static func < (lhs: LocalDate, rhs: LocalDate) -> Bool {
         lhs.linearTimestamp < rhs.linearTimestamp
     }

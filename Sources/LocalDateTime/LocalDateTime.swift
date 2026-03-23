@@ -2,6 +2,20 @@ import Foundation
 
 /// Performance considerations: class members which do calendar calculations are marked as "computationally expensive" and should only be called if necesary.
 public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringConvertible, CustomDebugStringConvertible, Hashable, Codable, Sendable {
+    public static func == (lhs: LocalDateTime, rhs: LocalDateTime) -> Bool {
+        lhs.year == rhs.year && lhs.month == rhs.month && lhs.day == rhs.day &&
+        lhs.hour == rhs.hour && lhs.minute == rhs.minute && lhs.second == rhs.second
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(year)
+        hasher.combine(month)
+        hasher.combine(day)
+        hasher.combine(hour)
+        hasher.combine(minute)
+        hasher.combine(second)
+    }
+
     public static func < (lhs: LocalDateTime, rhs: LocalDateTime) -> Bool {
         lhs.linearTimestamp < rhs.linearTimestamp
     }
