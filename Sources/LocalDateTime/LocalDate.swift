@@ -5,7 +5,7 @@ public protocol LocalDateType {
     var month: Int { get }
     var day: Int { get }
     
-    var linearTimestamp: Double { get }
+    var linearTimestamp: Int { get }
 }
 
 /// Performance considerations: class members which do calendar calculations are marked as "computationally expensive" and should only be called if necesary.
@@ -37,13 +37,13 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
     public let components: DateComponents
     
     /// This timestamp has only "ordered" semantics
-    public var linearTimestamp: Double {
-        Double(day) + 31.0 * (Double(month) + 12.0 * Double(year))
+    public var linearTimestamp: Int {
+        day + 31 * (month + 12 * year)
     }
     
     /// Initializes LocalDate with given date and time components.
     public init(year: Int, month: Int, day: Int) {
-        components = DateComponents(year: year, month: month, day: day, hour: 0, minute: 0, second: 0)
+        components = DateComponents(year: year, month: month, day: day)
     }
     
     public init(_ date: Date = Date(), timeZone: TimeZone = TimeZone(secondsFromGMT: 0)!) {
@@ -68,9 +68,26 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
         return LocalDate(year: components.year!, month: 12, day: 31)
     }
     
+    public func startOfMonth() -> LocalDate {
+        return LocalDate(year: year, month: month, day: 1)
+    }
+    
+    public func endOfMonth(_ timeZone: TimeZone = TimeZone(secondsFromGMT:0)!) -> LocalDate {
+        var newComponents = components
+        newComponents.month! += 1
+        newComponents.day = 1
+        
+        var calendar = Calendar.current
+        calendar.timeZone = timeZone
+        
+        let firstOfNextMonth = calendar.date(from: newComponents)
+        
+        return LocalDate(firstOfNextMonth!).localDate(byAdding: .day, value: -1)
+    }
+    
     /// calls "asDate" => expensive computation!
     public func localDate(calendar: Calendar = Calendar.current, byAdding component: Calendar.Component, value: Int, wrappingComponents: Bool = false) -> LocalDate {
-        let newDate = calendar.date(byAdding: component, value: value, to: asDate())!
+        let newDate = calendar.date(byAdding: component, value: value, to: asDate(), wrappingComponents: wrappingComponents)!
         return LocalDate(newDate)
     }
     
@@ -162,6 +179,7 @@ public struct LocalDate: LocalDateType, Equatable, Comparable, CustomStringConve
         let dateFormatter = DateFormatter()
         dateFormatter.locale = locale
         dateFormatter.dateStyle = style
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)!
         return dateFormatter.string(from: self.asDate())
     }
 }

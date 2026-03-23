@@ -33,8 +33,8 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
     public let components: DateComponents
     
     /// This timestamp has only "ordered" semantics
-    public var linearTimestamp: Double {
-        Double(second) + 60.0 * (Double(minute) + 60.0 * (Double(hour) + 24.0 * (Double(day) + 31.0 * (Double(month) + 12.0 * Double(year)))))
+    public var linearTimestamp: Int {
+        second + 60 * (minute + 60 * (hour + 24 * (day + 31 * (month + 12 * year))))
     }
     
     /// Initializes LocalDateTime with given date and time components.
@@ -133,6 +133,7 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
         }
     }
     
+    /// shortened version of "hourMinutes": no leading zeros, no trailing ":00"
     public var hourMinutesShort: String {
         get {
             if let hour = components.hour, let minute = components.minute {
@@ -165,7 +166,7 @@ public struct LocalDateTime: LocalDateType, Equatable, Comparable, CustomStringC
             }
         }
     }
-    
+
     @available(iOS 15.0, watchOS 6.0, *)
     public func relative(_ locale: Locale = .current) -> String {
         let formatter = RelativeDateTimeFormatter()
